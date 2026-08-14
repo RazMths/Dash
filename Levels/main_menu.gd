@@ -51,14 +51,15 @@ func animate_button_scale(button: Button, target_scale: Vector2) -> void:
 # Button Actions
 func _on_start_pressed() -> void:
 	if start_scene != "":
-		get_tree().change_scene_to_file(start_scene)
+		SceneLoader.load_scene(start_scene)
 	else:
 		print("Start Scene path not assigned in Inspector!")
 
 func _on_options_pressed() -> void:
 	if options_scene != "":
-		get_tree().change_scene_to_file(options_scene)
+		SceneLoader.load_scene(options_scene)
 	else:
+		$CanvasLayer/Control/Label.text = "في العجلة الندامة وفي التأني السلامة :()"
 		print("Options Scene path not assigned in Inspector!")
 
 func _on_quit_pressed() -> void:

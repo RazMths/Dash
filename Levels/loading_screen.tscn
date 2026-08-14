@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://21cevh5c5v0g"]
+
+[ext_resource type="Script" uid="uid://crvektuu6gndt" path="res://Levels/loading_screen.gd" id="1_2qyup"]
+[ext_resource type="Shader" uid="uid://dd0tiwu4dm536" path="res://Shaders/diamond_grid_wipe.gdshader" id="2_2qyup"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mtjga"]
+shader = ExtResource("2_2qyup")
+shader_parameter/progress = 0.0
+shader_parameter/wipe_color = Color(0, 0, 0, 1)
+shader_parameter/grid_size = 32.0
+shader_parameter/smoothness = 0.25
+
+[node name="LoadingScreen" type="CanvasLayer" unique_id=1502871210]
+layer = 100
+script = ExtResource("1_2qyup")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1415291854]
+material = SubResource("ShaderMaterial_mtjga")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

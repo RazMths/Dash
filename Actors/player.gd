@@ -25,6 +25,9 @@ var is_dashing: bool = false
 var can_dash: bool = true
 var dash_vector: Vector2 = Vector2.ZERO
 
+# camera thing
+@export var camera: CelesteCamera
+
 func _physics_process(delta: float) -> void:
 	# 1. Handle Dashing State
 	if is_dashing:
@@ -89,3 +92,5 @@ func start_dash() -> void:
 		input_dir = Vector2.RIGHT if velocity.x >= 0 else Vector2.LEFT
 	
 	dash_vector = input_dir
+	if camera:
+		camera.add_shake(4.0)

@@ -15,10 +15,25 @@ run/main_scene="uid://m2cpmq42hkpi"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SceneLoader="*uid://nmt7x2gnnbff"
+
 [display]
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[file_customization]
+
+folder_colors={
+"res://Actors/": "pink",
+"res://Custom scripts/": "green",
+"res://Levels/": "orange",
+"res://Objects/": "blue",
+"res://Shaders/": "purple",
+"res://Sounds/": "gray"
+}
 
 [input]
 

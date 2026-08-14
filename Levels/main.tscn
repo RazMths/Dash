@@ -1,13 +1,17 @@
 [gd_scene format=3 uid="uid://m2cpmq42hkpi"]
 
 [ext_resource type="PackedScene" uid="uid://benwwajg7xym6" path="res://Actors/player.tscn" id="1_gnif3"]
+[ext_resource type="Script" uid="uid://d36prtauby750" path="res://Custom scripts/camera_movements.gd" id="1_lwy2l"]
 [ext_resource type="PackedScene" uid="uid://c1j1se1lnh5i2" path="res://Objects/ground.tscn" id="2_lwy2l"]
 
 [node name="Main" type="Node2D" unique_id=1525660520]
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=59216848]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=59216848 node_paths=PackedStringArray("target")]
+script = ExtResource("1_lwy2l")
+target = NodePath("../Player")
 
-[node name="Player" parent="." unique_id=705438210 instance=ExtResource("1_gnif3")]
+[node name="Player" parent="." unique_id=705438210 node_paths=PackedStringArray("camera") instance=ExtResource("1_gnif3")]
+camera = NodePath("../Camera2D")
 
 [node name="Ground" parent="." unique_id=673741409 instance=ExtResource("2_lwy2l")]
 position = Vector2(-282, 128)
