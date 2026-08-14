@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://benwwajg7xym6"]
+
+[ext_resource type="Script" uid="uid://cjiax7n0a22o" path="res://Actors/player.gd" id="1_sor1j"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_mtjga"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tl1vq"]
+radius = 14.0
+height = 64.0
+
+[node name="Player" type="CharacterBody2D" unique_id=705438210]
+script = ExtResource("1_sor1j")
+
+[node name="Mesh" type="MeshInstance2D" parent="." unique_id=1044148448]
+position = Vector2(0, 3.8146973e-06)
+scale = Vector2(28, 33.000004)
+mesh = SubResource("CapsuleMesh_mtjga")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=716210730]
+shape = SubResource("CapsuleShape2D_tl1vq")
