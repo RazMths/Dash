@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://bjdrgi32so8l3"]
+
+[ext_resource type="Script" uid="uid://bapy4k1qstpkm" path="res://Levels/main_menu.gd" id="1_6ucrw"]
+
+[node name="main menu" type="Control" unique_id=1070035239]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6ucrw")
+start_scene = "uid://m2cpmq42hkpi"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1723435713]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1032279594]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control" unique_id=752508689]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.386981, 0.4540457, 0.20118839, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=2088356001]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -97.5
+offset_top = -118.0
+offset_right = 97.50043
+offset_bottom = 118.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 115.395)
+
+[node name="StartButton" type="Button" parent="CanvasLayer/Control/VBoxContainer" unique_id=261112433]
+layout_mode = 2
+theme_override_font_sizes/font_size = 49
+text = "Start"
+
+[node name="OptionsButton" type="Button" parent="CanvasLayer/Control/VBoxContainer" unique_id=694967324]
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 49
+text = "Options
+"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/Control/VBoxContainer" unique_id=907346889]
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 49
+text = "Quit
+"
