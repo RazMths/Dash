@@ -32,13 +32,22 @@ signal player_landed(impact_velocity: float)
 var facing_direction: float = 1.0
 var last_velocity_y: float = 0.0
 
+# for echo things
+@export var overlay_manager: ColorRect
+@export var echo_manager: Node2D
+
 func _physics_process(delta: float) -> void:
 	# 1. Handle Dashing State
 	if is_dashing:
 		dash_counter -= delta
 		velocity = dash_vector * dash_speed
+		
+		# --- FIX 1: Spawn Echo at END of dash ---
 		if dash_counter <= 0.0:
 			is_dashing = false
+			if overlay_manager:
+				overlay_manager.spawn_echo(global_position)
+		
 		move_and_slide()
 		return
 
@@ -47,7 +56,6 @@ func _physics_process(delta: float) -> void:
 		can_dash = true
 
 	# 2. Gravity & Coyote Time Counter
-	var was_on_floor = is_on_floor()
 	if is_on_floor():
 		coyote_counter = coyote_time  # Reset full window when on floor
 	else:
@@ -80,14 +88,14 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("dash") and can_dash:
 		start_dash()
 
+	# --- FIX 2: Save fall speed BEFORE move_and_slide resets it ---
 	if not is_on_floor():
 		last_velocity_y = velocity.y
 
 	move_and_slide()
 
-# Detect the frame the player hits the ground
+	# Detect the frame the player hits the ground
 	if is_on_floor() and last_velocity_y > 0:
-		# Emit the signal and pass how fast the player was falling!
 		player_landed.emit(last_velocity_y)
 		last_velocity_y = 0.0
 
@@ -96,6 +104,11 @@ func execute_jump() -> void:
 	coyote_counter = 0.0
 	buffer_counter = 0.0
 
+	# Echo on jump
+	if overlay_manager:
+		overlay_manager.spawn_echo(global_position)
+		echo_manager.spawn_echo(global_position, 200.0) 
+
 func start_dash() -> void:
 	can_dash = false
 	is_dashing = true
@@ -103,7 +116,7 @@ func start_dash() -> void:
 	
 	var input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	if input_dir == Vector2.ZERO:
-		input_dir = Vector2.RIGHT if velocity.x >= 0 else Vector2.LEFT
-	
+		input_dir = Vector2.RIGHT if facing_direction >= 0 else Vector2.LEFT
+
 	dash_vector = input_dir
 	player_dashed.emit()

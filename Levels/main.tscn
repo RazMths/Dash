@@ -3,25 +3,32 @@
 [ext_resource type="PackedScene" uid="uid://benwwajg7xym6" path="res://Actors/player.tscn" id="1_gnif3"]
 [ext_resource type="Script" uid="uid://d36prtauby750" path="res://Custom scripts/camera_movements.gd" id="1_lwy2l"]
 [ext_resource type="PackedScene" uid="uid://c1j1se1lnh5i2" path="res://Objects/ground.tscn" id="2_lwy2l"]
-[ext_resource type="Shader" uid="uid://isovtvoex32j" path="res://Shaders/pattern_transition.gdshader" id="4_nj2yk"]
+[ext_resource type="Shader" uid="uid://lvg0pgnwm1ff" path="res://Shaders/echo_transition.gdshader" id="4_7pswh"]
 [ext_resource type="Script" uid="uid://cxvkivf8u6g3j" path="res://Custom scripts/color_rect_for_player.gd" id="5_7pswh"]
+[ext_resource type="Script" uid="uid://naa1nw83belv" path="res://echo_test.gd" id="6_34bfm"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_30lun"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hbaan"]
 noise_type = 3
-frequency = 0.05
+frequency = 0.04
+fractal_gain = 0.45
+fractal_weighted_strength = 1.0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rsr8b"]
-noise = SubResource("FastNoiseLite_30lun")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ovrsl"]
+noise = SubResource("FastNoiseLite_hbaan")
 seamless = true
+seamless_blend_skirt = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mtjga"]
-shader = ExtResource("4_nj2yk")
-shader_parameter/mask_texture = SubResource("NoiseTexture2D_rsr8b")
-shader_parameter/progress = 0.2150000102125
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7pswh"]
+shader = ExtResource("4_7pswh")
+shader_parameter/mask_texture = SubResource("NoiseTexture2D_ovrsl")
+shader_parameter/progress = 0.1710000081225
 shader_parameter/edge_sharpness = 0.0010000000475
 shader_parameter/center = Vector2(0.5, 0.5)
-shader_parameter/aspect_ratio = 1.853
+shader_parameter/aspect_ratio = 1.7777778
 shader_parameter/wipe_color = Color(0, 0, 0, 1)
+shader_parameter/echo_positions = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/echo_radii = PackedFloat32Array(0, 0, 0, 0, 0)
+shader_parameter/echo_strengths = PackedFloat32Array(0, 0, 0, 0, 0)
 
 [node name="Main" type="Node2D" unique_id=1525660520]
 
@@ -30,28 +37,33 @@ position = Vector2(1146, -496)
 script = ExtResource("1_lwy2l")
 target = NodePath("../Player")
 
-[node name="Player" parent="." unique_id=705438210 instance=ExtResource("1_gnif3")]
+[node name="Player" parent="." unique_id=705438210 node_paths=PackedStringArray("overlay_manager", "echo_manager") instance=ExtResource("1_gnif3")]
 position = Vector2(1146, -496)
+overlay_manager = NodePath("../TransitionLayer/ColorRect")
+echo_manager = NodePath("../echo test")
 
-[node name="Ground" parent="." unique_id=673741409 instance=ExtResource("2_lwy2l")]
-position = Vector2(864, -368)
+[node name="envi" type="Node2D" parent="." unique_id=932482123]
+position = Vector2(1144, -615)
 
-[node name="Ground2" parent="." unique_id=876665645 instance=ExtResource("2_lwy2l")]
-position = Vector2(1194, -341)
+[node name="Ground" parent="envi" unique_id=673741409 instance=ExtResource("2_lwy2l")]
+position = Vector2(-280, 247)
 
-[node name="Ground3" parent="." unique_id=1512131718 instance=ExtResource("2_lwy2l")]
-position = Vector2(1473, -367)
+[node name="Ground2" parent="envi" unique_id=876665645 instance=ExtResource("2_lwy2l")]
+position = Vector2(50, 274)
 
-[node name="Ground4" parent="." unique_id=1279401428 instance=ExtResource("2_lwy2l")]
-position = Vector2(1284, -468)
+[node name="Ground3" parent="envi" unique_id=1512131718 instance=ExtResource("2_lwy2l")]
+position = Vector2(329, 248)
 
-[node name="Ground5" parent="." unique_id=102237335 instance=ExtResource("2_lwy2l")]
-position = Vector2(1548, -537)
+[node name="Ground4" parent="envi" unique_id=1279401428 instance=ExtResource("2_lwy2l")]
+position = Vector2(140, 147)
+
+[node name="Ground5" parent="envi" unique_id=102237335 instance=ExtResource("2_lwy2l")]
+position = Vector2(404, 78)
 
 [node name="TransitionLayer" type="CanvasLayer" parent="." unique_id=1065882980]
 
 [node name="ColorRect" type="ColorRect" parent="TransitionLayer" unique_id=1141679003 node_paths=PackedStringArray("player")]
-material = SubResource("ShaderMaterial_mtjga")
+material = SubResource("ShaderMaterial_7pswh")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -60,3 +72,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5_7pswh")
 player = NodePath("../../Player")
+
+[node name="echo test" type="Node2D" parent="." unique_id=913312027]
+script = ExtResource("6_34bfm")
