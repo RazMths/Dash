@@ -3,21 +3,60 @@
 [ext_resource type="PackedScene" uid="uid://benwwajg7xym6" path="res://Actors/player.tscn" id="1_gnif3"]
 [ext_resource type="Script" uid="uid://d36prtauby750" path="res://Custom scripts/camera_movements.gd" id="1_lwy2l"]
 [ext_resource type="PackedScene" uid="uid://c1j1se1lnh5i2" path="res://Objects/ground.tscn" id="2_lwy2l"]
+[ext_resource type="Shader" uid="uid://isovtvoex32j" path="res://Shaders/pattern_transition.gdshader" id="4_nj2yk"]
+[ext_resource type="Script" uid="uid://cxvkivf8u6g3j" path="res://Custom scripts/color_rect_for_player.gd" id="5_7pswh"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_30lun"]
+noise_type = 3
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rsr8b"]
+noise = SubResource("FastNoiseLite_30lun")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mtjga"]
+shader = ExtResource("4_nj2yk")
+shader_parameter/mask_texture = SubResource("NoiseTexture2D_rsr8b")
+shader_parameter/progress = 0.2150000102125
+shader_parameter/edge_sharpness = 0.0010000000475
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/aspect_ratio = 1.853
+shader_parameter/wipe_color = Color(0, 0, 0, 1)
 
 [node name="Main" type="Node2D" unique_id=1525660520]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=59216848 node_paths=PackedStringArray("target")]
+position = Vector2(1146, -496)
 script = ExtResource("1_lwy2l")
 target = NodePath("../Player")
 
-[node name="Player" parent="." unique_id=705438210 node_paths=PackedStringArray("camera") instance=ExtResource("1_gnif3")]
-camera = NodePath("../Camera2D")
+[node name="Player" parent="." unique_id=705438210 instance=ExtResource("1_gnif3")]
+position = Vector2(1146, -496)
 
 [node name="Ground" parent="." unique_id=673741409 instance=ExtResource("2_lwy2l")]
-position = Vector2(-282, 128)
+position = Vector2(864, -368)
 
 [node name="Ground2" parent="." unique_id=876665645 instance=ExtResource("2_lwy2l")]
-position = Vector2(48, 155)
+position = Vector2(1194, -341)
 
 [node name="Ground3" parent="." unique_id=1512131718 instance=ExtResource("2_lwy2l")]
-position = Vector2(292, 65)
+position = Vector2(1473, -367)
+
+[node name="Ground4" parent="." unique_id=1279401428 instance=ExtResource("2_lwy2l")]
+position = Vector2(1284, -468)
+
+[node name="Ground5" parent="." unique_id=102237335 instance=ExtResource("2_lwy2l")]
+position = Vector2(1548, -537)
+
+[node name="TransitionLayer" type="CanvasLayer" parent="." unique_id=1065882980]
+
+[node name="ColorRect" type="ColorRect" parent="TransitionLayer" unique_id=1141679003 node_paths=PackedStringArray("player")]
+material = SubResource("ShaderMaterial_mtjga")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_7pswh")
+player = NodePath("../../Player")

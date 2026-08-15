@@ -20,6 +20,7 @@ height = 64.0
 
 [node name="Player" type="CharacterBody2D" unique_id=705438210]
 script = ExtResource("1_sor1j")
+coyote_time = 0.2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1940170246]
 scale = Vector2(0.125, 0.125)

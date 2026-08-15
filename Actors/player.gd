@@ -26,7 +26,11 @@ var can_dash: bool = true
 var dash_vector: Vector2 = Vector2.ZERO
 
 # camera thing
-@export var camera: CelesteCamera
+signal player_dashed
+signal player_landed(impact_velocity: float)
+
+var facing_direction: float = 1.0
+var last_velocity_y: float = 0.0
 
 func _physics_process(delta: float) -> void:
 	# 1. Handle Dashing State
@@ -68,6 +72,7 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 	if direction != 0:
 		velocity.x = move_toward(velocity.x, direction * move_speed, acceleration * delta)
+		facing_direction = sign(direction) # for the camera logic
 	else:
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 
@@ -75,7 +80,16 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("dash") and can_dash:
 		start_dash()
 
+	if not is_on_floor():
+		last_velocity_y = velocity.y
+
 	move_and_slide()
+
+# Detect the frame the player hits the ground
+	if is_on_floor() and last_velocity_y > 0:
+		# Emit the signal and pass how fast the player was falling!
+		player_landed.emit(last_velocity_y)
+		last_velocity_y = 0.0
 
 func execute_jump() -> void:
 	velocity.y = jump_velocity
@@ -92,5 +106,4 @@ func start_dash() -> void:
 		input_dir = Vector2.RIGHT if velocity.x >= 0 else Vector2.LEFT
 	
 	dash_vector = input_dir
-	if camera:
-		camera.add_shake(4.0)
+	player_dashed.emit()

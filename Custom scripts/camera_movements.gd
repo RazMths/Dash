@@ -3,7 +3,21 @@ class_name CelesteCamera
 
 @export_group("Target Tracking")
 ## Drag and drop your Player node here in the Inspector
-@export var target: Node2D
+@export var target: Node2D:
+	set(new_target):
+		# Disconnect signals from previous target if replaced
+		if target and target.is_connected("player_dashed", _on_player_dashed):
+			target.disconnect("player_dashed", _on_player_dashed)
+		if target and target.is_connected("player_landed", _on_player_landed):
+			target.disconnect("player_landed", _on_player_landed)
+		
+		target = new_target
+		
+		# Connect signals to new target
+		if target and target.has_signal("player_dashed"):
+			target.player_dashed.connect(_on_player_dashed)
+		if target.has_signal("player_landed"):
+				target.player_landed.connect(_on_player_landed)
 ## How fast the camera moves toward the target
 @export var follow_speed: float = 6.0
 ## How far ahead the camera looks in the facing direction
@@ -73,3 +87,13 @@ func apply_room_limits(rect: Rect2i) -> void:
 	limit_top = rect.position.y
 	limit_right = rect.position.x + rect.size.x
 	limit_bottom = rect.position.y + rect.size.y
+
+func _on_player_dashed() -> void:
+	add_shake(4.0) # Shake intensity on dash
+
+func _on_player_landed(impact_velocity: float) -> void:
+	# Only shake if the landing was hard (e.g., falling faster than 300 px/s)
+	if impact_velocity > 300.0:
+		# Scale the shake intensity relative to the impact speed!
+		var shake_amount = remap(impact_velocity, 300.0, 1000.0, 2.0, 10.0)
+		add_shake(shake_amount)
