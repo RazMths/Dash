@@ -5,7 +5,14 @@
 [ext_resource type="PackedScene" uid="uid://c1j1se1lnh5i2" path="res://Objects/ground.tscn" id="2_lwy2l"]
 [ext_resource type="Shader" uid="uid://lvg0pgnwm1ff" path="res://Shaders/echo_transition.gdshader" id="4_7pswh"]
 [ext_resource type="Script" uid="uid://cxvkivf8u6g3j" path="res://Custom scripts/color_rect_for_player.gd" id="5_7pswh"]
-[ext_resource type="Script" uid="uid://naa1nw83belv" path="res://echo_test.gd" id="6_34bfm"]
+
+[sub_resource type="Environment" id="Environment_mtjga"]
+background_mode = 1
+background_color = Color(0.1475446, 0.06610177, 0.15601495, 1)
+ambient_light_color = Color(0.4674787, 0.4674787, 0.4674787, 1)
+ssao_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_34bfm"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_hbaan"]
 noise_type = 3
@@ -32,15 +39,18 @@ shader_parameter/echo_strengths = PackedFloat32Array(0, 0, 0, 0, 0)
 
 [node name="Main" type="Node2D" unique_id=1525660520]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=826271088]
+environment = SubResource("Environment_mtjga")
+camera_attributes = SubResource("CameraAttributesPractical_34bfm")
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=59216848 node_paths=PackedStringArray("target")]
 position = Vector2(1146, -496)
 script = ExtResource("1_lwy2l")
 target = NodePath("../Player")
 
-[node name="Player" parent="." unique_id=705438210 node_paths=PackedStringArray("overlay_manager", "echo_manager") instance=ExtResource("1_gnif3")]
+[node name="Player" parent="." unique_id=705438210 node_paths=PackedStringArray("overlay_manager") instance=ExtResource("1_gnif3")]
 position = Vector2(1146, -496)
 overlay_manager = NodePath("../TransitionLayer/ColorRect")
-echo_manager = NodePath("../echo test")
 
 [node name="envi" type="Node2D" parent="." unique_id=932482123]
 position = Vector2(1144, -615)
@@ -72,6 +82,3 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5_7pswh")
 player = NodePath("../../Player")
-
-[node name="echo test" type="Node2D" parent="." unique_id=913312027]
-script = ExtResource("6_34bfm")

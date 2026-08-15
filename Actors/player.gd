@@ -107,7 +107,6 @@ func execute_jump() -> void:
 	# Echo on jump
 	if overlay_manager:
 		overlay_manager.spawn_echo(global_position)
-		echo_manager.spawn_echo(global_position, 200.0) 
 
 func start_dash() -> void:
 	can_dash = false
