@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://blv8a7p638oqb"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mtjga"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(14.1, 1.875, 1)
+gravity = Vector3(0, 98, 0)
+use_scale_3d = true
+scale_3d_min = Vector3(1, 1, 1)
+scale_3d_max = Vector3(1, 7.095, 1)
+
+[node name="GPUParticles2D" type="GPUParticles2D" unique_id=2137514239]
+process_material = SubResource("ParticleProcessMaterial_mtjga")

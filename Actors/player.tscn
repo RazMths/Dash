@@ -1,16 +1,70 @@
 [gd_scene format=3 uid="uid://benwwajg7xym6"]
 
 [ext_resource type="Script" uid="uid://cjiax7n0a22o" path="res://Actors/player.gd" id="1_sor1j"]
-[ext_resource type="Texture2D" uid="uid://drfv0ixwmcret" path="res://Actors/Players animations/وقوف/الولد الابيض.png" id="2_y2lmi"]
+[ext_resource type="Texture2D" uid="uid://b32wma3ca4o77" path="res://Actors/Players animations/قفز/3.png" id="2_sinrj"]
+[ext_resource type="Texture2D" uid="uid://drfv0ixwmcret" path="res://Actors/Players animations/وقوف/idle_1.png" id="2_y2lmi"]
+[ext_resource type="Texture2D" uid="uid://dmlj3habqmji4" path="res://Actors/Players animations/وقوف/idle_2.png" id="4_c5kq5"]
+[ext_resource type="Texture2D" uid="uid://jyfi13hlrynv" path="res://Actors/Players animations/قفز/1.png" id="4_ks2ow"]
+[ext_resource type="Texture2D" uid="uid://46rnlxjshd8v" path="res://Actors/Players animations/وقوف/idle_3.png" id="5_6kbgh"]
+[ext_resource type="Texture2D" uid="uid://mq3a6biyfdsp" path="res://Actors/Players animations/قفز/2.png" id="5_tvot5"]
+[ext_resource type="Texture2D" uid="uid://cwpmecveq3hhs" path="res://Actors/Players animations/الركض/1.png" id="6_c5kq5"]
+[ext_resource type="Texture2D" uid="uid://dst4tjqx3jsny" path="res://Actors/Players animations/الركض/2.png" id="6_ks2ow"]
+[ext_resource type="Texture2D" uid="uid://b7pv7v3lg0w0l" path="res://Actors/Players animations/الركض/3.png" id="7_6kbgh"]
+[ext_resource type="Texture2D" uid="uid://clxgjjkhpujqu" path="res://Actors/Players animations/الركض/4.png" id="8_3sj5c"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mtjga"]
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_sinrj")
+}],
+"loop": 1,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_y2lmi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_c5kq5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_6kbgh")
 }],
 "loop": 1,
 "name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ks2ow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_tvot5")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ks2ow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_6kbgh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_c5kq5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ks2ow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_3sj5c")
+}],
+"loop": 1,
+"name": &"walk",
 "speed": 5.0
 }]
 
@@ -18,9 +72,53 @@ animations = [{
 radius = 7.0
 height = 64.0
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rsr8b"]
+lifetime_randomness = 0.1
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(15.89, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 101.885
+flatness = 0.225
+gravity = Vector3(0, -98, 0)
+linear_accel_min = 59.999996
+linear_accel_max = 150.0
+scale_min = 3.0
+scale_max = 5.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mtjga"]
+particle_flag_disable_z = true
+gravity = Vector3(0, -20, 0)
+linear_accel_min = 19.999998
+linear_accel_max = 39.999996
+scale_min = 2.0
+scale_max = 4.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_30lun"]
+particle_flag_disable_z = true
+spread = 60.0
+gravity = Vector3(0, 10, 0)
+linear_accel_min = 14.999997
+linear_accel_max = 29.999996
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_c5kq5"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("AnimatedSprite2D:animation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("JumpParticles:emitting")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("AnimatedSprite2D:flip_h")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+
 [node name="Player" type="CharacterBody2D" unique_id=705438210]
 script = ExtResource("1_sor1j")
 coyote_time = 0.2
+dash_duration = 0.2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1940170246]
 scale = Vector2(0.125, 0.125)
@@ -30,3 +128,28 @@ offset = Vector2(-7.74, 0)
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=716210730]
 shape = SubResource("CapsuleShape2D_tl1vq")
+
+[node name="JumpParticles" type="GPUParticles2D" parent="." unique_id=1453010400]
+position = Vector2(0, 31)
+emitting = false
+amount = 12
+lifetime = 0.6
+one_shot = true
+explosiveness = 0.85
+process_material = SubResource("ParticleProcessMaterial_rsr8b")
+
+[node name="WalkParticles" type="GPUParticles2D" parent="." unique_id=1198458228]
+position = Vector2(0, 31)
+emitting = false
+lifetime = 0.3
+process_material = SubResource("ParticleProcessMaterial_mtjga")
+
+[node name="WallParticles" type="GPUParticles2D" parent="." unique_id=696145828]
+position = Vector2(8, -6)
+emitting = false
+amount = 10
+lifetime = 0.35000000000000003
+process_material = SubResource("ParticleProcessMaterial_30lun")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2063882913]
+replication_config = SubResource("SceneReplicationConfig_c5kq5")

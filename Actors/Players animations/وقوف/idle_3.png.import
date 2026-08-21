@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drfv0ixwmcret"
-path="res://.godot/imported/الولد الابيض.png-cd2e49dd8d91bf3a880d14be5683fd4c.ctex"
+uid="uid://46rnlxjshd8v"
+path="res://.godot/imported/idle_3.png-dcb8104c22857f65f48600171ea34322.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Actors/Players animations/وقوف/الولد الابيض.png"
-dest_files=["res://.godot/imported/الولد الابيض.png-cd2e49dd8d91bf3a880d14be5683fd4c.ctex"]
+source_file="res://Actors/Players animations/وقوف/idle_3.png"
+dest_files=["res://.godot/imported/idle_3.png-dcb8104c22857f65f48600171ea34322.ctex"]
 
 [params]
 

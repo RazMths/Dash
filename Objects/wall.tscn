@@ -1,15 +1,14 @@
-[gd_scene format=3 uid="uid://c1j1se1lnh5i2"]
+[gd_scene format=3 uid="uid://b8lib4q4du5po"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_mtjga"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rsr8b"]
-size = Vector2(220, 26)
+size = Vector2(146, 338)
 
-[node name="Ground" type="StaticBody2D" unique_id=673741409]
+[node name="Wall" type="StaticBody2D" unique_id=673741409]
 
 [node name="Mesh" type="MeshInstance2D" parent="." unique_id=753816232]
-modulate = Color(0, 0.54167426, 0.8398011, 1)
-scale = Vector2(220.00002, 26)
+scale = Vector2(145.99998, 338.00003)
 mesh = SubResource("BoxMesh_mtjga")
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=1299107074]

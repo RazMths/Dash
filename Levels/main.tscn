@@ -1,23 +1,28 @@
 [gd_scene format=3 uid="uid://m2cpmq42hkpi"]
 
-[ext_resource type="PackedScene" uid="uid://benwwajg7xym6" path="res://Actors/player.tscn" id="1_gnif3"]
-[ext_resource type="Script" uid="uid://d36prtauby750" path="res://Custom scripts/camera_movements.gd" id="1_lwy2l"]
+[ext_resource type="PackedScene" uid="uid://b80v0jp23qmxd" path="res://Objects/camera_2d.tscn" id="1_7pswh"]
+[ext_resource type="Script" uid="uid://dlk0otdj8q2da" path="res://Levels/main.gd" id="1_ovrsl"]
 [ext_resource type="PackedScene" uid="uid://c1j1se1lnh5i2" path="res://Objects/ground.tscn" id="2_lwy2l"]
 [ext_resource type="Shader" uid="uid://lvg0pgnwm1ff" path="res://Shaders/echo_transition.gdshader" id="4_7pswh"]
+[ext_resource type="PackedScene" uid="uid://b8lib4q4du5po" path="res://Objects/wall.tscn" id="4_34bfm"]
 [ext_resource type="Script" uid="uid://cxvkivf8u6g3j" path="res://Custom scripts/color_rect_for_player.gd" id="5_7pswh"]
 
 [sub_resource type="Environment" id="Environment_mtjga"]
-background_mode = 1
+background_mode = 3
 background_color = Color(0.1475446, 0.06610177, 0.15601495, 1)
-ambient_light_color = Color(0.4674787, 0.4674787, 0.4674787, 1)
-ssao_enabled = true
-
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_34bfm"]
+glow_enabled = true
+glow_intensity = 0.6
+glow_bloom = 0.1
+glow_hdr_threshold = 1.47
+glow_hdr_scale = 0.86
+glow_hdr_luminance_cap = 15.85
+adjustment_enabled = true
+adjustment_brightness = 0.63
+adjustment_contrast = 1.25
+adjustment_saturation = 0.35
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_hbaan"]
 noise_type = 3
-frequency = 0.04
-fractal_gain = 0.45
 fractal_weighted_strength = 1.0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ovrsl"]
@@ -29,7 +34,9 @@ seamless_blend_skirt = 1.0
 shader = ExtResource("4_7pswh")
 shader_parameter/mask_texture = SubResource("NoiseTexture2D_ovrsl")
 shader_parameter/progress = 0.1710000081225
-shader_parameter/edge_sharpness = 0.0010000000475
+shader_parameter/player_circle = 0.10000000149012
+shader_parameter/edge_sharpness = 0.01
+shader_parameter/motion_speed = 0.15
 shader_parameter/center = Vector2(0.5, 0.5)
 shader_parameter/aspect_ratio = 1.7777778
 shader_parameter/wipe_color = Color(0, 0, 0, 1)
@@ -38,19 +45,16 @@ shader_parameter/echo_radii = PackedFloat32Array(0, 0, 0, 0, 0)
 shader_parameter/echo_strengths = PackedFloat32Array(0, 0, 0, 0, 0)
 
 [node name="Main" type="Node2D" unique_id=1525660520]
+script = ExtResource("1_ovrsl")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=826271088]
 environment = SubResource("Environment_mtjga")
-camera_attributes = SubResource("CameraAttributesPractical_34bfm")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=59216848 node_paths=PackedStringArray("target")]
-position = Vector2(1146, -496)
-script = ExtResource("1_lwy2l")
-target = NodePath("../Player")
+[node name="Players" type="Node2D" parent="." unique_id=1957692395]
 
-[node name="Player" parent="." unique_id=705438210 node_paths=PackedStringArray("overlay_manager") instance=ExtResource("1_gnif3")]
+[node name="Camera2D" parent="." unique_id=1789413914 instance=ExtResource("1_7pswh")]
 position = Vector2(1146, -496)
-overlay_manager = NodePath("../TransitionLayer/ColorRect")
+player_dash_intensity = 7.0
 
 [node name="envi" type="Node2D" parent="." unique_id=932482123]
 position = Vector2(1144, -615)
@@ -61,8 +65,29 @@ position = Vector2(-280, 247)
 [node name="Ground2" parent="envi" unique_id=876665645 instance=ExtResource("2_lwy2l")]
 position = Vector2(50, 274)
 
+[node name="Ground6" parent="envi" unique_id=1622062418 instance=ExtResource("2_lwy2l")]
+position = Vector2(-134, 423)
+
+[node name="Ground7" parent="envi" unique_id=1699206637 instance=ExtResource("2_lwy2l")]
+position = Vector2(-426, 377)
+
+[node name="Ground8" parent="envi" unique_id=158536914 instance=ExtResource("2_lwy2l")]
+position = Vector2(-670, 258)
+
 [node name="Ground3" parent="envi" unique_id=1512131718 instance=ExtResource("2_lwy2l")]
 position = Vector2(329, 248)
+
+[node name="Ground9" parent="envi" unique_id=2008787686 instance=ExtResource("2_lwy2l")]
+position = Vector2(622, 367)
+
+[node name="Ground10" parent="envi" unique_id=1886047483 instance=ExtResource("2_lwy2l")]
+position = Vector2(824, 263)
+
+[node name="Ground11" parent="envi" unique_id=31506591 instance=ExtResource("2_lwy2l")]
+position = Vector2(1089, 185)
+
+[node name="Ground12" parent="envi" unique_id=1232191133 instance=ExtResource("2_lwy2l")]
+position = Vector2(1405, 104)
 
 [node name="Ground4" parent="envi" unique_id=1279401428 instance=ExtResource("2_lwy2l")]
 position = Vector2(140, 147)
@@ -70,9 +95,12 @@ position = Vector2(140, 147)
 [node name="Ground5" parent="envi" unique_id=102237335 instance=ExtResource("2_lwy2l")]
 position = Vector2(404, 78)
 
+[node name="Wall" parent="envi" unique_id=2067075483 instance=ExtResource("4_34bfm")]
+position = Vector2(205, -94)
+
 [node name="TransitionLayer" type="CanvasLayer" parent="." unique_id=1065882980]
 
-[node name="ColorRect" type="ColorRect" parent="TransitionLayer" unique_id=1141679003 node_paths=PackedStringArray("player")]
+[node name="ColorRect" type="ColorRect" parent="TransitionLayer" unique_id=1141679003]
 material = SubResource("ShaderMaterial_7pswh")
 anchors_preset = 15
 anchor_right = 1.0
@@ -81,4 +109,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5_7pswh")
-player = NodePath("../../Player")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1751714785]
+_spawnable_scenes = PackedStringArray("uid://benwwajg7xym6")
+spawn_path = NodePath("../Players")

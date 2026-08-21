@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b80v0jp23qmxd"]
+
+[ext_resource type="Script" uid="uid://d36prtauby750" path="res://Custom scripts/camera_movements.gd" id="1_ispy7"]
+
+[node name="Camera2D" type="Camera2D" unique_id=1789413914 node_paths=PackedStringArray("target")]
+zoom = Vector2(0.8, 0.8)
+script = ExtResource("1_ispy7")
+target = NodePath("")
+follow_speed = 0.2
