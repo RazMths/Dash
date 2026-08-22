@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b80v0jp23qmxd" path="res://Objects/camera_2d.tscn" id="1_7pswh"]
 [ext_resource type="Script" uid="uid://dlk0otdj8q2da" path="res://Levels/main.gd" id="1_ovrsl"]
 [ext_resource type="PackedScene" uid="uid://c1j1se1lnh5i2" path="res://Objects/ground.tscn" id="2_lwy2l"]
+[ext_resource type="Texture2D" uid="uid://c5h6d1q7806ln" path="res://Assets/test1 wallpaper.png" id="2_ovrsl"]
 [ext_resource type="Shader" uid="uid://lvg0pgnwm1ff" path="res://Shaders/echo_transition.gdshader" id="4_7pswh"]
 [ext_resource type="PackedScene" uid="uid://b8lib4q4du5po" path="res://Objects/wall.tscn" id="4_34bfm"]
 [ext_resource type="Script" uid="uid://cxvkivf8u6g3j" path="res://Custom scripts/color_rect_for_player.gd" id="5_7pswh"]
@@ -11,13 +12,10 @@
 background_mode = 3
 background_color = Color(0.1475446, 0.06610177, 0.15601495, 1)
 glow_enabled = true
-glow_intensity = 0.6
-glow_bloom = 0.1
-glow_hdr_threshold = 1.47
-glow_hdr_scale = 0.86
-glow_hdr_luminance_cap = 15.85
+glow_intensity = 2.95
+glow_bloom = 0.25
 adjustment_enabled = true
-adjustment_brightness = 0.63
+adjustment_brightness = 0.78
 adjustment_contrast = 1.25
 adjustment_saturation = 0.35
 
@@ -47,23 +45,46 @@ shader_parameter/echo_strengths = PackedFloat32Array(0, 0, 0, 0, 0)
 [node name="Main" type="Node2D" unique_id=1525660520]
 script = ExtResource("1_ovrsl")
 
+[node name="Test1Wallpaper" type="Sprite2D" parent="." unique_id=550688714]
+show_behind_parent = true
+position = Vector2(1482, -765)
+texture = ExtResource("2_ovrsl")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=1462289642]
+color = Color(0.53568584, 0.5356859, 0.5356859, 1)
+blend_mode = 1
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=826271088]
 environment = SubResource("Environment_mtjga")
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=807878613]
+position = Vector2(673, -760)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=1337776337]
+position = Vector2(166, -131)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=581538934]
+position = Vector2(1483, 51)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=631876275]
+position = Vector2(292, 168)
 
 [node name="Players" type="Node2D" parent="." unique_id=1957692395]
 
 [node name="Camera2D" parent="." unique_id=1789413914 instance=ExtResource("1_7pswh")]
-position = Vector2(1146, -496)
+position = Vector2(1482, -765)
+zoom = Vector2(0.73, 0.73)
+follow_speed = 0.0
 player_dash_intensity = 7.0
 
 [node name="envi" type="Node2D" parent="." unique_id=932482123]
 position = Vector2(1144, -615)
 
 [node name="Ground" parent="envi" unique_id=673741409 instance=ExtResource("2_lwy2l")]
-position = Vector2(-280, 247)
+position = Vector2(-180, 141)
 
 [node name="Ground2" parent="envi" unique_id=876665645 instance=ExtResource("2_lwy2l")]
-position = Vector2(50, 274)
+position = Vector2(0, -219)
 
 [node name="Ground6" parent="envi" unique_id=1622062418 instance=ExtResource("2_lwy2l")]
 position = Vector2(-134, 423)
@@ -72,31 +93,31 @@ position = Vector2(-134, 423)
 position = Vector2(-426, 377)
 
 [node name="Ground8" parent="envi" unique_id=158536914 instance=ExtResource("2_lwy2l")]
-position = Vector2(-670, 258)
+position = Vector2(-296, -127)
 
 [node name="Ground3" parent="envi" unique_id=1512131718 instance=ExtResource("2_lwy2l")]
-position = Vector2(329, 248)
+position = Vector2(527, 135)
 
 [node name="Ground9" parent="envi" unique_id=2008787686 instance=ExtResource("2_lwy2l")]
-position = Vector2(622, 367)
+position = Vector2(468, -371)
 
 [node name="Ground10" parent="envi" unique_id=1886047483 instance=ExtResource("2_lwy2l")]
 position = Vector2(824, 263)
 
 [node name="Ground11" parent="envi" unique_id=31506591 instance=ExtResource("2_lwy2l")]
-position = Vector2(1089, 185)
+position = Vector2(1011, 28)
 
 [node name="Ground12" parent="envi" unique_id=1232191133 instance=ExtResource("2_lwy2l")]
 position = Vector2(1405, 104)
 
 [node name="Ground4" parent="envi" unique_id=1279401428 instance=ExtResource("2_lwy2l")]
-position = Vector2(140, 147)
+position = Vector2(272, 210)
 
 [node name="Ground5" parent="envi" unique_id=102237335 instance=ExtResource("2_lwy2l")]
-position = Vector2(404, 78)
+position = Vector2(686, -120)
 
 [node name="Wall" parent="envi" unique_id=2067075483 instance=ExtResource("4_34bfm")]
-position = Vector2(205, -94)
+position = Vector2(221, -157)
 
 [node name="TransitionLayer" type="CanvasLayer" parent="." unique_id=1065882980]
 

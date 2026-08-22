@@ -115,6 +115,15 @@ properties/3/path = NodePath("AnimatedSprite2D:flip_h")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
+[sub_resource type="Gradient" id="Gradient_6kbgh"]
+offsets = PackedFloat32Array(0, 0.6491935)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtjga"]
+gradient = SubResource("Gradient_6kbgh")
+fill = 1
+fill_from = Vector2(0.502907, 0.4738372)
+
 [node name="Player" type="CharacterBody2D" unique_id=705438210]
 script = ExtResource("1_sor1j")
 coyote_time = 0.2
@@ -153,3 +162,9 @@ process_material = SubResource("ParticleProcessMaterial_30lun")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2063882913]
 replication_config = SubResource("SceneReplicationConfig_c5kq5")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1513296084]
+energy = 1.65
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_mtjga")
+texture_scale = 9.6

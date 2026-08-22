@@ -36,7 +36,6 @@ extends CharacterBody2D
 @onready var wall_particles: GPUParticles2D = $WallParticles
 
 @export var overlay_manager: ColorRect
-@export var echo_manager: Node2D
 
 @onready var default_sprite_scale: Vector2 = animated_sprite.scale
 
@@ -58,8 +57,26 @@ signal player_landed(impact_velocity: float)
 var facing_direction: float = 1.0
 var last_velocity_y: float = 0.0
 
+func _enter_tree() -> void:
+	var id_str = name.get_slice("_", 1)
+	if id_str.is_valid_int():
+		set_multiplayer_authority(id_str.to_int())
+
+func _ready() -> void:
+	# Only execute control and camera/overlay lookups for the LOCAL authority instance
+	if is_multiplayer_authority():
+		_find_overlay_manager()
+
+func _find_overlay_manager() -> void:
+	if not overlay_manager:
+		# Locate ColorRect inside UI/CanvasLayer or root level
+		overlay_manager = get_tree().root.find_child("ColorRect", true, false) as ColorRect
+
 func _physics_process(delta: float) -> void:
-	# If player fall the scene will reset
+	# Prevent non-local authority instances from processing input/movement
+	if not is_multiplayer_authority():
+		return
+
 	if global_position.y > fall_limit_y:
 		reset_scene()
 	
@@ -69,8 +86,8 @@ func _physics_process(delta: float) -> void:
 		ghost_timer -= delta
 		velocity = dash_vector * dash_speed
 		
-		walk_particles.emitting = false
-		wall_particles.emitting = false
+		if walk_particles: walk_particles.emitting = false
+		if wall_particles: wall_particles.emitting = false
 		
 		if ghost_timer <= 0.0:
 			spawn_dash_ghost()
@@ -81,8 +98,8 @@ func _physics_process(delta: float) -> void:
 		if dash_counter <= 0.0:
 			is_dashing = false
 			velocity = dash_vector * (move_speed * 0.8)
-			if overlay_manager:
-				pass # overlay_manager.spawn_echo(global_position)
+			if overlay_manager and overlay_manager.has_method("spawn_echo"):
+				overlay_manager.spawn_echo(global_position)
 		
 		move_and_slide()
 		return
@@ -95,26 +112,23 @@ func _physics_process(delta: float) -> void:
 	var input_dir_x = Input.get_axis("move_left", "move_right")
 	var is_against_wall = is_on_wall() and not is_on_floor()
 
-	# Determine if sliding down or holding onto a wall
 	is_wall_sliding = is_against_wall and (velocity.y > 0 or Input.is_action_pressed("move_up") or Input.is_action_pressed("move_down"))
 
 	if is_wall_sliding:
-		# Reposition wall particles to touch the wall
-		wall_particles.position.x = sign(-wall_normal.x) * 8.0
-		wall_particles.emitting = true
+		if wall_particles:
+			wall_particles.position.x = sign(-wall_normal.x) * 8.0
+			wall_particles.emitting = true
 
 		if Input.is_action_pressed("move_up"):
 			velocity.y = -wall_climb_speed
 		elif Input.is_action_pressed("move_down"):
 			velocity.y = wall_climb_speed
 		else:
-			# Slow wall slide gravity drag
 			velocity.y = min(velocity.y + gravity * 0.2 * delta, wall_slide_speed)
 	else:
 		if wall_particles:
 			wall_particles.emitting = false
 
-		# Normal Dynamic Air / Floor Gravity
 		if is_on_floor():
 			coyote_counter = coyote_time
 		else:
@@ -132,7 +146,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		buffer_counter -= delta
 
-	# 4. Jump Execution (Floor vs Wall Jump)
+	# 4. Jump Execution
 	if buffer_counter > 0.0:
 		if coyote_counter > 0.0:
 			execute_jump()
@@ -172,11 +186,8 @@ func _physics_process(delta: float) -> void:
 	update_animations(input_dir_x)
 
 func reset_scene() -> void:
-	# Disable player processing to prevent multiple triggers
 	set_physics_process(false)
-	
 	var tween = create_tween()
-	# Assuming overlay_manager is a ColorRect covering the screen
 	if overlay_manager:
 		tween.tween_property(overlay_manager, "color:a", 1.0, 0.25)
 		tween.tween_callback(get_tree().reload_current_scene)
@@ -190,7 +201,7 @@ func update_animations(input_dir_x: float) -> void:
 	if is_wall_sliding:
 		animated_sprite.play("jump")
 	elif not is_on_floor():
-		walk_particles.emitting = false
+		if walk_particles: walk_particles.emitting = false
 		if velocity.y < 0:
 			animated_sprite.play("jump")
 		else:
@@ -198,10 +209,10 @@ func update_animations(input_dir_x: float) -> void:
 	else:
 		if abs(velocity.x) > 10.0:
 			animated_sprite.play("walk")
-			walk_particles.emitting = true
+			if walk_particles: walk_particles.emitting = true
 		else:
 			animated_sprite.play("idle")
-			walk_particles.emitting = false
+			if walk_particles: walk_particles.emitting = false
 
 func execute_jump() -> void:
 	velocity.y = jump_velocity
@@ -209,11 +220,10 @@ func execute_jump() -> void:
 	buffer_counter = 0.0
 	apply_jump_stretch()
 	trigger_burst_particles()
-	if overlay_manager:
+	if overlay_manager and overlay_manager.has_method("spawn_echo"):
 		overlay_manager.spawn_echo(global_position)
 
 func execute_wall_jump(wall_normal: Vector2) -> void:
-	# Push away from wall normal direction
 	velocity.x = wall_normal.x * wall_jump_velocity.x
 	velocity.y = wall_jump_velocity.y
 	facing_direction = sign(wall_normal.x)
@@ -222,7 +232,7 @@ func execute_wall_jump(wall_normal: Vector2) -> void:
 	apply_jump_stretch()
 	trigger_burst_particles()
 
-	if overlay_manager:
+	if overlay_manager and overlay_manager.has_method("spawn_echo"):
 		overlay_manager.spawn_echo(global_position)
 
 func trigger_burst_particles() -> void:
@@ -270,4 +280,4 @@ func spawn_dash_ghost() -> void:
 	
 	var tween = ghost.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(ghost, "modulate:a", 0.0, 0.25)
-	tween.tween_callback(ghost.queue_free) 
+	tween.tween_callback(ghost.queue_free)
