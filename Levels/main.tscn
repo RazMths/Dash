@@ -51,7 +51,7 @@ position = Vector2(1482, -765)
 texture = ExtResource("2_ovrsl")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=1462289642]
-color = Color(0.53568584, 0.5356859, 0.5356859, 1)
+color = Color(0.17522371, 0.17522374, 0.17522362, 1)
 blend_mode = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=826271088]
@@ -84,13 +84,13 @@ position = Vector2(1144, -615)
 position = Vector2(-180, 141)
 
 [node name="Ground2" parent="envi" unique_id=876665645 instance=ExtResource("2_lwy2l")]
-position = Vector2(0, -219)
+position = Vector2(-77, -217)
 
 [node name="Ground6" parent="envi" unique_id=1622062418 instance=ExtResource("2_lwy2l")]
-position = Vector2(-134, 423)
+position = Vector2(35, 159)
 
 [node name="Ground7" parent="envi" unique_id=1699206637 instance=ExtResource("2_lwy2l")]
-position = Vector2(-426, 377)
+position = Vector2(26, -47)
 
 [node name="Ground8" parent="envi" unique_id=158536914 instance=ExtResource("2_lwy2l")]
 position = Vector2(-296, -127)

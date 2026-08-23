@@ -1,14 +1,17 @@
 [gd_scene format=3 uid="uid://c1j1se1lnh5i2"]
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_mtjga"]
+polygon = PackedVector2Array(-65, -12, 64, -13, 65, 12, -65, 13)
+
 [sub_resource type="BoxMesh" id="BoxMesh_mtjga"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rsr8b"]
 size = Vector2(130, 26)
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_mtjga"]
-polygon = PackedVector2Array(-65, -12, 64, -13, 65, 12, -65, 13)
-
 [node name="Ground" type="StaticBody2D" unique_id=673741409]
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=2035524592]
+occluder = SubResource("OccluderPolygon2D_mtjga")
 
 [node name="Mesh" type="MeshInstance2D" parent="." unique_id=753816232]
 modulate = Color(0.7731152, 0.0022030408, 0.95984906, 1)
@@ -17,6 +20,3 @@ mesh = SubResource("BoxMesh_mtjga")
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=1299107074]
 shape = SubResource("RectangleShape2D_rsr8b")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=2035524592]
-occluder = SubResource("OccluderPolygon2D_mtjga")
